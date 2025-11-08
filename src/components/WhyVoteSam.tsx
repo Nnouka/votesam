@@ -75,11 +75,20 @@ const WhyVoteSam = () => {
   }, []);
 
   return (
-    <section id="why-sam" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
+    <section id="why-sam" className="py-20 bg-white relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 opacity-20">
+        <img 
+          src="/vote-sam-flyer-2.jpg" 
+          alt="Vote Sam Background" 
+          className="w-full h-full object-cover object-top"
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <Title level={2} className="!text-4xl md:!text-5xl font-bold mb-4">
-            Why Vote Sam?
+            Why Vote Samuel?
           </Title>
           <Paragraph className="!text-xl text-gray-600 max-w-3xl mx-auto">
             Experience, dedication, and a genuine commitment to making CMU Africa the best it can be for every student.
