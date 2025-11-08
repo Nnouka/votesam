@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cfcache:clear": "export AWS_PAGER=\"\"; aws cloudfront create-invalidation --distribution-id $CF_DISTRO --paths '/*';"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
