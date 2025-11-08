@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Typography } from 'antd';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -24,6 +24,8 @@ const Countdown = () => {
     minutes: 0,
     seconds: 0
   });
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const ctaButtonsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -49,6 +51,23 @@ const Countdown = () => {
     return () => clearInterval(timer);
   }, []); // Empty dependency array since VOTING_DAY is a constant
 
+  // Intersection Observer to track CTA buttons visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Show sticky bar when buttons are NOT visible
+        setShowStickyBar(!entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ctaButtonsRef.current) {
+      observer.observe(ctaButtonsRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className="min-h-screen py-12 md:py-16 text-white relative overflow-hidden flex items-center wave-bottom">
       {/* Hero Image Background */}
@@ -65,7 +84,7 @@ const Countdown = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Compact Attention-Grabbing Header */}
         <div className="text-center mb-8 md:mb-12">
-          <div className="inline-block bg-gold-thread text-weaver-blue px-6 py-2 rounded-full font-bold text-sm md:text-base mb-6 animate-pulse shadow-lg">
+          <div className="inline-block bg-gold-thread text-weaver-blue px-6 py-2 rounded-full font-bold text-sm md:text-base mb-6 animate-pulse shadow-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
             ⚡ VOTING DAY: NOVEMBER 14th, 2025 ⚡
           </div>
           <Title level={1} className="!text-white !text-4xl md:!text-6xl lg:!text-7xl font-extrabold mb-4 drop-shadow-2xl">
@@ -110,21 +129,41 @@ const Countdown = () => {
             </div>
           </div>
           
-          {/* Call to Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
+          {/* Call to Action Buttons - Always visible, tracked for mobile sticky bar */}
+          <div ref={ctaButtonsRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
             <a 
               href="#manifesto" 
-              className="bg-carnegie-red text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-skibo-red transition-all transform hover:scale-105 shadow-xl"
+              className="bg-carnegie-red text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-skibo-red transition-all transform hover:scale-105 shadow-xl w-full sm:w-auto text-center"
             >
               Read the Manifesto
             </a>
             <a 
               href="#why-sam" 
-              className="bg-transparent border-2 border-gold-thread text-gold-thread px-8 py-4 rounded-full font-bold text-lg hover:bg-gold-thread hover:text-weaver-blue transition-all transform hover:scale-105 shadow-xl"
+              className="bg-transparent border-2 border-gold-thread text-gold-thread px-8 py-4 rounded-full font-bold text-lg hover:bg-gold-thread hover:text-weaver-blue transition-all transform hover:scale-105 shadow-xl w-full sm:w-auto text-center"
             >
               Why Vote Sam?
             </a>
           </div>
+        </div>
+      </div>
+
+      {/* Sticky CTA Bar for Mobile - Shows only when original buttons are out of view */}
+      <div className={`sm:hidden fixed bottom-0 left-0 right-0 bg-iron-gray/95 backdrop-blur-md border-t-2 border-gold-thread p-4 z-50 shadow-2xl transition-transform duration-300 ${
+        showStickyBar ? 'translate-y-0' : 'translate-y-full'
+      }`}>
+        <div className="flex flex-col gap-3">
+          <a 
+            href="#manifesto" 
+            className="bg-carnegie-red text-white px-6 py-3 rounded-full font-bold text-base text-center hover:bg-skibo-red transition-all shadow-lg"
+          >
+            Read the Manifesto
+          </a>
+          <a 
+            href="#why-sam" 
+            className="bg-transparent border-2 border-gold-thread text-gold-thread px-6 py-3 rounded-full font-bold text-base text-center hover:bg-gold-thread hover:text-weaver-blue transition-all shadow-lg"
+          >
+            Why Vote Sam?
+          </a>
         </div>
       </div>
     </section>
