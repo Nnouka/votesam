@@ -20,7 +20,7 @@ const Hero = () => {
             {/* Text and Buttons Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6 md:p-10 text-center">
               <Title level={1} className="!text-white !text-3xl md:!text-5xl lg:!text-6xl font-bold mb-4">
-                Vote Big Sam for Guild President
+                Vote Sammuel Chukwuma for Guild President
               </Title>
               
               <Paragraph className="!text-white !text-lg md:!text-xl mb-6 opacity-90">

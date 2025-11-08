@@ -69,7 +69,7 @@ const Countdown = () => {
             ⚡ VOTING DAY: NOVEMBER 14th, 2025 ⚡
           </div>
           <Title level={1} className="!text-white !text-4xl md:!text-6xl lg:!text-7xl font-extrabold mb-4 drop-shadow-2xl">
-            Vote Sam for Guild President
+            Vote Big Sam for Guild President
           </Title>
           <Paragraph className="!text-white !text-xl md:!text-2xl mb-6 opacity-90 font-semibold drop-shadow-lg">
             Leadership. Vision. Action. Building a better CMU Africa together.
