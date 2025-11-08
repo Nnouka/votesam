@@ -85,7 +85,7 @@ const Countdown = () => {
         {/* Compact Attention-Grabbing Header */}
         <div className="text-center mb-8 md:mb-12">
           <div className="inline-block bg-gold-thread text-weaver-blue px-6 py-2 rounded-full font-bold text-sm md:text-base mb-6 animate-pulse shadow-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-            ⚡ VOTING DAY: NOVEMBER 14th, 2025 ⚡
+            ⚡ VOTING DAY: {VOTING_DAY.format('MMMM D, YYYY')} ⚡
           </div>
           <Title level={1} className="!text-white !text-4xl md:!text-6xl lg:!text-7xl font-extrabold mb-4 drop-shadow-2xl">
             Vote Big Sam for Guild President
