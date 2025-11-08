@@ -15,7 +15,7 @@ interface TimeLeft {
 }
 
 // Move votingDay outside component to prevent recreation on every render
-const VOTING_DAY = dayjs('2025-11-14T00:00:00');
+const VOTING_DAY = dayjs('2025-11-15T00:00:00');
 
 const Countdown = () => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
