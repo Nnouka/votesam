@@ -5,6 +5,7 @@ import {
   UsergroupAddOutlined,
   RiseOutlined
 } from '@ant-design/icons';
+import { useEffect, useRef, useState } from 'react';
 
 const { Title, Paragraph } = Typography;
 
@@ -38,6 +39,41 @@ const qualifications: Qualification[] = [
 ];
 
 const WhyVoteSam = () => {
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+  const [ctaVisible, setCtaVisible] = useState(false);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target === ctaRef.current) {
+              setCtaVisible(true);
+            } else {
+              const index = cardsRef.current.indexOf(entry.target as HTMLDivElement);
+              if (index !== -1) {
+                setVisibleCards(prev => new Set(prev).add(index));
+              }
+            }
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    cardsRef.current.forEach(card => {
+      if (card) observer.observe(card);
+    });
+    
+    if (ctaRef.current) {
+      observer.observe(ctaRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="why-sam" className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -52,26 +88,41 @@ const WhyVoteSam = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
           {qualifications.map((qual, index) => (
-            <Card
+            <div
               key={index}
-              className="hover:shadow-xl transition-all duration-300 border-l-4 border-carnegie-red"
+              ref={el => { cardsRef.current[index] = el; }}
+              className={`transition-all duration-700 ${
+                visibleCards.has(index)
+                  ? 'opacity-100 translate-x-0'
+                  : index % 2 === 0 ? 'opacity-0 -translate-x-8' : 'opacity-0 translate-x-8'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
             >
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">{qual.icon}</div>
-                <div>
-                  <Title level={4} className="!text-xl mb-2">
-                    {qual.title}
-                  </Title>
-                  <Paragraph className="text-gray-600 mb-0">
-                    {qual.description}
-                  </Paragraph>
+              <Card
+                className="hover:shadow-xl transition-all duration-300 border-l-4 border-carnegie-red h-full"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">{qual.icon}</div>
+                  <div>
+                    <Title level={4} className="!text-xl mb-2">
+                      {qual.title}
+                    </Title>
+                    <Paragraph className="text-gray-600 mb-0">
+                      {qual.description}
+                    </Paragraph>
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           ))}
         </div>
         
-        <div className="bg-gradient-to-r from-carnegie-red to-blue-thread rounded-2xl p-8 md:p-12 text-white text-center max-w-4xl mx-auto">
+        <div 
+          ref={ctaRef}
+          className={`bg-gradient-to-r from-carnegie-red to-blue-thread rounded-2xl p-8 md:p-12 text-white text-center max-w-4xl mx-auto transition-all duration-1000 ${
+            ctaVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
+        >
           <Title level={3} className="!text-white !text-3xl mb-4">
             Ready to Make a Difference Together?
           </Title>

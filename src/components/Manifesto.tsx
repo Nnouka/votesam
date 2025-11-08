@@ -7,6 +7,8 @@ import {
   HeartOutlined,
   SafetyOutlined 
 } from '@ant-design/icons';
+import { useEffect, useRef, useState } from 'react';
+import confetti from 'canvas-confetti';
 
 const { Title, Paragraph } = Typography;
 
@@ -50,8 +52,74 @@ const manifestoItems: ManifestoItem[] = [
 ];
 
 const Manifesto = () => {
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const launchConfetti = () => {
+    const duration = 2000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { 
+      startVelocity: 30, 
+      spread: 360, 
+      ticks: 60, 
+      zIndex: 1000,
+      colors: ['#C41230', '#FDB515', '#043673', '#007BC0', '#009647']
+    };
+
+    const randomInRange = (min: number, max: number) => {
+      return Math.random() * (max - min) + min;
+    };
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+      });
+      
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+      });
+    }, 250);
+
+    setTimeout(() => clearInterval(interval), duration);
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = cardsRef.current.indexOf(entry.target as HTMLDivElement);
+            if (index !== -1) {
+              setVisibleCards(prev => new Set(prev).add(index));
+            }
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    cardsRef.current.forEach(card => {
+      if (card) observer.observe(card);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="manifesto" className="py-20 bg-gray-50">
+    <section id="manifesto" className="py-20 bg-gray-50" ref={sectionRef}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <Title level={2} className="!text-4xl md:!text-5xl font-bold mb-4">
@@ -64,21 +132,32 @@ const Manifesto = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {manifestoItems.map((item, index) => (
-            <Card
+            <div
               key={index}
-              className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-t-4 border-carnegie-red"
-              hoverable
+              ref={el => { cardsRef.current[index] = el; }}
+              className={`transition-all duration-700 ${
+                visibleCards.has(index)
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+              onMouseEnter={launchConfetti}
             >
-              <div className="text-center">
-                <div className="mb-4">{item.icon}</div>
-                <Title level={4} className="!text-xl mb-3">
-                  {item.title}
-                </Title>
-                <Paragraph className="text-gray-600">
-                  {item.description}
-                </Paragraph>
-              </div>
-            </Card>
+              <Card
+                className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-t-4 border-carnegie-red h-full"
+                hoverable
+              >
+                <div className="text-center">
+                  <div className="mb-4">{item.icon}</div>
+                  <Title level={4} className="!text-xl mb-3">
+                    {item.title}
+                  </Title>
+                  <Paragraph className="text-gray-600">
+                    {item.description}
+                  </Paragraph>
+                </div>
+              </Card>
+            </div>
           ))}
         </div>
       </div>
