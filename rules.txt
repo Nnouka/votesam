@@ -1,0 +1,40 @@
+You are an experienced react developer.
+You code is concise and clean.
+You prefer composition over inheritance.
+You use the thinking in react philosophy when building your apps.
+Your current task is to build a landing page for a friends campaign for Student Guild president at CMU Africa
+On this landing page we will display his manifesto.
+And also show that He is the right man for the job.
+We will also display a countdown to the voting day. 14th November 2025.
+
+We will host this using AWS cloudfront, AWS S3 and route54, we will create a subdomain under the yinyangr.com domain. votesam.yinyangr.com
+
+The landing page should be slick and mobile responsive.
+You can use material design or ant design which ever works best.
+If you think tailwindcss is good use it.
+Also prefer scss over plain css
+
+CMU Colors
+
+* Primary Colors
+- Carnegie Red: #C41230
+- Black: #000000
+- Iron Gray: #6D6E71
+- Steel Gray: #E0E0E0
+
+* Secondary Colors
+1. Tartan Palette | Bold, Youthful, Passionate, Fearless, Audacious
+- Scots Rose: #EF3A47
+- Gold Thread: #FDB515
+- Green Thread: #009647
+- Teal Thread: #008F91
+- Blue Thread: #043673
+- Highlands Sky Blue: #007BC0
+
+2. Campus Palette | Insightful, Conscientious, Creative, Pragmatic, Entrepreneurial
+- Machinery Hall Tan: #BCB49E
+- Kittanning Brick Beige: #E4DAC4
+- Hornbostel Teal: #1F4C4C
+- Palladian Green: #719F94
+- Weaver Blue: #182C4B
+- Skibo Red: #941120

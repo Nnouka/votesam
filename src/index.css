@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  /* CMU Primary Colors */
+  --color-carnegie-red: #C41230;
+  --color-iron-gray: #6D6E71;
+  --color-steel-gray: #E0E0E0;
+  
+  /* CMU Tartan Palette (Bold, Youthful, Passionate) */
+  --color-scots-rose: #EF3A47;
+  --color-gold-thread: #FDB515;
+  --color-green-thread: #009647;
+  --color-teal-thread: #008F91;
+  --color-blue-thread: #043673;
+  --color-highlands-blue: #007BC0;
+  
+  /* CMU Campus Palette (Insightful, Creative, Entrepreneurial) */
+  --color-hornbostel-teal: #1F4C4C;
+  --color-palladian-green: #719F94;
+  --color-weaver-blue: #182C4B;
+  --color-skibo-red: #941120;
+  
+  /* Convenience aliases */
+  --color-primary: #C41230;
+  --color-secondary: #043673;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}

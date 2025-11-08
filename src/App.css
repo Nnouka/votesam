@@ -1,0 +1,11 @@
+/* App styles - using Tailwind for most styling */
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure no horizontal overflow */
+.min-h-screen {
+  overflow-x: hidden;
+}
